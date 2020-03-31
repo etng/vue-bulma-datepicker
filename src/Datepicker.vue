@@ -34,7 +34,7 @@ export default {
       default: 'Pick date'
     },
     readonly: Boolean,
-    value: String
+    value: [String, Array]
   },
 
   ready () {
@@ -57,9 +57,11 @@ export default {
     create () {
       if (!this.datepicker) {
         this.datepicker = new Datepicker(this.$el.nextSibling, this.config, this.l10n)
-        this.datepicker.set('onChange', (d, s) => {
-        this.$set('value', s)
-      })
+        this.datepicker.set('onChange', (d, s, inst) => {
+          window.cdp = inst
+          console.log("play with cdp first plz")
+          this.$set('value', s)
+        })
       }
     },
 
