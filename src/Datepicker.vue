@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import { init as Flatpickr } from 'flatpickr'
+import Flatpickr from 'flatpickr'
 
-function Datepicker (selector, config, l10n) {
-  this.l10n = Object.assign({}, Flatpickr.prototype.l10n, l10n)
-  return Flatpickr.call(this, selector, config)
-}
+// function Datepicker (selector, config, l10n) {
+//   this.l10n = Object.assign({}, Flatpickr.prototype.l10n, l10n)
+//   return Flatpickr.call(this, selector, config)
+// }
 
-Datepicker.prototype = Flatpickr.prototype
+// Datepicker.prototype = Flatpickr.prototype
 
 export default {
   partials: {
@@ -56,12 +56,13 @@ export default {
   methods: {
     create () {
       if (!this.datepicker) {
-        this.datepicker = new Datepicker(this.$el.nextSibling, this.config, this.l10n)
-        this.datepicker.set('onChange', (d, s, inst) => {
+        this.datepicker = new Flatpickr(this.$el.nextSibling, this.config)
+        // this.datepicker = new Datepicker(this.$el.nextSibling, this.config, this.l10n)
+        this.datepicker.onChange = (d, s, inst) => {
           window.cdp = inst
-          console.log("play with cdp first plz")
+          // console.log("play with cdp first plz", d, s)
           this.$set('value', s)
-        })
+        }
       }
     },
 
@@ -70,6 +71,11 @@ export default {
         this.datepicker.destroy()
         this.datepicker = null
       }
+    },
+
+    activate () {
+      console.log('activate dp')
+      this.$emit('open', this.id)
     }
   },
 
@@ -102,5 +108,5 @@ $day_hover_background_color = #d3d6db
 $today_color = #ed6c63
 $selected_day_background = #1fc8db
 
-@import '~flatpickr/src/style/flatpickr_base'
+@import '~flatpickr/src/style/flatpickr'
 </style>
