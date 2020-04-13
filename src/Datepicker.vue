@@ -38,6 +38,7 @@ export default {
   },
 
   ready () {
+//    console.log('b4 create', this.datepicker)
     this.create()
   },
 
@@ -55,17 +56,19 @@ export default {
 
   methods: {
     create () {
+      console.log(this.$el.nextSibling)
       if (!this.datepicker) {
         this.datepicker = new Flatpickr(this.$el.nextSibling, this.config)
         // this.datepicker = new Datepicker(this.$el.nextSibling, this.config, this.l10n)
-        this.datepicker.onChange = (d, s, inst) => {
-          window.cdp = inst
-          // console.log("play with cdp first plz", d, s)
-          this.$set('value', s)
-        }
       }
+      this.datepicker.set('onChange', (d, s, inst) => {
+  //      window.cdp = inst
+ //       console.log("play with cdp first plz", d, s)
+        this.$set('value', s)
+        // this.$dispatch('changed', s)
+        this.$dispatch('change', s)
+      })
     },
-
     destroy () {
       if (this.datepicker && !this.static) {
         this.datepicker.destroy()
@@ -74,7 +77,7 @@ export default {
     },
 
     activate () {
-      console.log('activate dp')
+   //   console.log('activate dp')
       this.$emit('open', this.id)
     }
   },
