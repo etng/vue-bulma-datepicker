@@ -38,7 +38,8 @@ export default {
   },
 
   ready () {
-//    console.log('b4 create', this.datepicker)
+    // console.log('b4 create', this.datepicker)
+    // debugger
     this.create()
   },
 
@@ -56,17 +57,24 @@ export default {
 
   methods: {
     create () {
-      console.log(this.$el.nextSibling)
+      // console.log(this.$el.nextSibling)
       if (!this.datepicker) {
         this.datepicker = new Flatpickr(this.$el.nextSibling, this.config)
         // this.datepicker = new Datepicker(this.$el.nextSibling, this.config, this.l10n)
       }
+      // this.datepicker.set('onOpen',  (d, s, inst) => {
+      //   this.$dispatch('open', '', '', '')
+      // })
       this.datepicker.set('onChange', (d, s, inst) => {
-  //      window.cdp = inst
- //       console.log("play with cdp first plz", d, s)
-        this.$set('value', s)
+        // window.cdp = inst
+        // console.log("play with cdp first plz", d, s)
+        var dates =  s ? s.split(',').map((x) => {
+          return x.trim()
+        }): []
+        console.log('new dates:', dates)
+        this.$set('value', dates)
         // this.$dispatch('changed', s)
-        this.$dispatch('change', s)
+        this.$dispatch('change', dates)
       })
     },
     destroy () {
@@ -77,8 +85,8 @@ export default {
     },
 
     activate () {
-   //   console.log('activate dp')
-      this.$emit('open', this.id)
+      // console.log('activate dp')
+      this.$dispatch('open', this.id)
     }
   },
 
